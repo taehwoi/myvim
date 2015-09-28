@@ -14,18 +14,11 @@ Run *./setup.sh* to install the plugins
 7. **vim-Tagbar** : \t to view file's tag  
 ...and many more.
 
-# Syntax Files - Unused as of now.
+# Syntax Files - Many are unused as of now.  
+# Check .vimrc for possible usage
 
-1. **html5-vim** : HTML5 - HTML과 JavaScript
-2. **vim-haml** : HAML
-3. **vim-less** : LESS
-4. **vim-scala** : Scala
-5. **vim-handlebars** : Handlebars
-6. **vim-rails** : has_many 등등의 Rails 예약어 highlighting
-7. **grunt.vim** : Grunt의 Gruntfile syntax highlighting 및 각종 이상한 기능들
-8. **vim-coffee-script** : CoffeeScript
-9. **vim-javascript** : JavaScript
-10. **vim-ruby** : Ruby
+1. **vim-rails** : has_many 등등의 Rails 예약어 highlighting
+2. **vim-ruby** : Ruby
 
 # Dependencies
 1. **tlib_vim** : Snipmate에 필요
@@ -35,7 +28,7 @@ Run *./setup.sh* to install the plugins
 # Notable .vimrc settings.
 
 1. **map Space to \** : press space where leader key is required
-2. ** \* ** in visual mode to search currently selected part.
+2. ** * ** in visual mode to search currently selected part.
 3. **Ctrl -hjkl** : move between splits easily
 4. **:W** : write a file as sudo.
 5. **\l** : view currently open buffers  
