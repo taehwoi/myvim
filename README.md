@@ -27,7 +27,7 @@ Run *./setup.sh* to install the plugins
 # Notable .vimrc settings.
 
 * **map Space to \** : press space where leader key is required
-* * in visual mode to search currently selected part.
+* **&#8203;*&#8203;** in visual mode to search currently selected part.
 * **Ctrl -hjkl** : move between splits easily
 * **:W** : write a file as sudo.
 * **\l** : view currently open buffers  
