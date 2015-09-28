@@ -2,7 +2,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'indiofish/auto-pairs'
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/syntastic', { 'for': ['c', 'cpp', 'java', 'scheme'], 'on': []}
+Plug 'scrooloose/syntastic', {'on': []}
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'Shougo/neocomplete.vim'
@@ -31,6 +31,11 @@ Plug 'tpope/vim-rails'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 call plug#end() 
+augroup load_plugins
+  au!
+  au InsertEnter * call plug#load('vim-snipmate')
+  au BufWritePre *.c,*.cpp,*.java,*.rkt call plug#load('syntastic')
+augroup END
 
 "filetype indent on
 "filetype plugin on
@@ -105,15 +110,9 @@ map <Space> <leader>
 "easier saving & quitting
 nmap <leader>w :w!<cr>
 nmap <leader>q :q<cr>
-"ciw to delete in the word (doesn't include spaces) and go to insert mode
-map <leader>dw ciw
-"delete brackets
-map <leader>db ci(
-"delete quotes
-map <leader>dq ci"
 "Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
-noremap <Leader>l :ls<CR>:buffer<Space>
+noremap <Leader>l :ls<CR>:b
 
 "copy the whole file to clipboard
 nnoremap <leader>cp :%y+<cr>:echo "Copied to clipboard"<cr>
@@ -183,10 +182,6 @@ vmap <leader>cu <plug>NERDCommenterUncommentgv
 
 "syntastic configuration
 "if racket file hangs while checking, ^C to escape.
-augroup load_plugins
-  au!
-  au InsertEnter * call plug#load('vim-snipmate','syntastic')
-augroup END
 let g:syntastic_error_symbol = "✗"
 let g:syntastic_warning_symbol = "⚠"
 let g:syntastic_filetype_map = {"scheme" : "racket"}
