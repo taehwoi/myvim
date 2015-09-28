@@ -1,16 +1,17 @@
 call plug#begin('~/.vim/plugged')
 
+Plug 'indiofish/auto-pairs'
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/syntastic', { 'on': []}
-Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
+Plug 'scrooloose/syntastic', { 'for': ['c', 'cpp', 'java', 'scheme'], 'on': []}
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'Shougo/neocomplete.vim'
-Plug 'junegunn/limelight.vim'
 Plug 'bling/vim-airline'
 Plug 'garbas/vim-snipmate',{ 'on': []} | Plug 'indiofish/vim-snippets'
 Plug 'tpope/vim-surround', {'for': 'html'}
-Plug 'indiofish/auto-pairs'
+Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
+Plug 'junegunn/limelight.vim'
+Plug 'junegunn/goyo.vim'
 
 "syntax files
 Plug 'vim-ruby/vim-ruby'
@@ -86,19 +87,16 @@ set wildignore=*.o,*~,*.pyc,*.class,*.zip,*.out
 
 "for vim not gvim; force terminal color 256
 set t_Co=256 
+augroup load_colors
+  au!
+  au ColorScheme * set background=dark
+  au ColorScheme * hi CursorLineNr ctermfg=117 cterm=bold 
+  au ColorScheme * hi LineNr ctermfg=250 ctermbg=none
+  au ColorScheme * hi Pmenu ctermfg=250 ctermbg=8
+  au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
+  au ColorScheme * hi Normal ctermbg = NONE
+augroup END
 color molokai
-set background=dark
-"for terminal's transparent background
-hi normal ctermbg = NONE
-"hi nontext ctermbg = NONE
-"orange
-"hi CursorLineNr ctermfg=202 cterm=bold
-"skyblue
-hi CursorLineNr ctermfg=117 cterm=bold 
-hi LineNr ctermfg=250 ctermbg=none
-hi Pmenu ctermfg=250 ctermbg=8
-hi PmenuSel ctermfg=11 ctermbg=25
-
 "KEYMAPS
 
 "<leader> settings
@@ -139,7 +137,7 @@ vnoremap < <gv
 
 "in autocomplete, C-n would always highlight some choice
 "inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
-  "\ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+"\ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
 
 "move through splits easily
 map <C-j> <C-W>j
@@ -185,9 +183,9 @@ vmap <leader>cu <plug>NERDCommenterUncommentgv
 
 "syntastic configuration
 "if racket file hangs while checking, ^C to escape.
-augroup load_syntastic_snips
+augroup load_plugins
   au!
-  au InsertEnter * call plug#load('vim-snipmate', 'syntastic')
+  au InsertEnter * call plug#load('vim-snipmate','syntastic')
 augroup END
 let g:syntastic_error_symbol = "✗"
 let g:syntastic_warning_symbol = "⚠"
@@ -236,7 +234,7 @@ let g:neocomplete#auto_completion_start_length = 3
 let g:AutoPairsMapBS = 0
 inoremap <expr><BS> pumvisible()? neocomplete#smart_close_popup()."\<C-h>" : AutoPairsDelete()
 
-
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 "Tagbar configuration
 nmap <leader>t :TagbarToggle<cr>
@@ -245,7 +243,12 @@ let g:tagbar_show_visibility = 1
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
 
-"autocmds
+"Limelight configuration
+let g:limelight_conceal_ctermfg = 59
+let g:limelight_priority = -1
+
+"AUTOCMDS
+
 augroup gen_view
   au!
   autocmd BufWinLeave *.* mkview
@@ -325,4 +328,8 @@ function! VisualSelection(direction, extra_filter) range
 
   let @/ = l:pattern
   let @" = l:saved_reg
+endfunction
+
+function! s:goyo_leave()
+  ''
 endfunction
