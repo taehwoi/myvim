@@ -11,7 +11,7 @@ Run *./setup.sh* to install the plugins
 4. **vim-snipmate** : inc(tab) => #include <stdio.h>, mainn(tab) => int main()... (vim-snippets에 auto-completion 리스트가 있음)
 5. **syntastic** : when you save -> show errors
 6. **neocomplete** : pops up auto-completion menu -> ctrl+j to select
-7. **vim-Tagbar** : \t to view file's tag
+7. **vim-Tagbar** : \t to view file's tag  
 ...and many more.
 
 # Syntax Files - Unused as of now.
@@ -34,9 +34,9 @@ Run *./setup.sh* to install the plugins
 
 # Notable .vimrc settings.
 
-1. mapped space key to \ : press space where leader key is required
-2. * in visual mode to search currently selected part.
-3. Ctrl -hjkl : move between splits easily
-4. :W : write a file as sudo.
-5. \l : view currently open buffers
+1. **map Space to \** : press space where leader key is required
+2. ** * ** in visual mode to search currently selected part.
+3. **Ctrl -hjkl** : move between splits easily
+4. **:W** : write a file as sudo.
+5. **\l** : view currently open buffers  
 ...and many more.
