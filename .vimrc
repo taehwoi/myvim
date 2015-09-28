@@ -226,12 +226,15 @@ let g:airline#extensions#default#section_truncate_width = {
 set ttimeoutlen=40
 
 "neocomplete configuration
-let g:AutoPairsMapBS = 0
-let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#max_list = 10
 let g:neocomplete#enable_auto_select = 1
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+let g:neocomplete#auto_completion_start_length = 3
+"fixes a bug that happens where autopairs overwrite neocomplete's smart close
+"option
+let g:AutoPairsMapBS = 0
+
 
 "Tagbar configuration
 nmap <leader>t :TagbarToggle<cr>
@@ -241,8 +244,11 @@ let g:tagbar_sort = 0
 let g:tagbar_compact = 1
 
 "autocmds
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview
+augroup gen_view
+  au!
+  autocmd BufWinLeave *.* mkview
+  autocmd BufWinEnter *.* silent loadview
+augroup END
 
 if has("autocmd")
   " When editing a file, always jump to the last known cursor position.
@@ -260,21 +266,17 @@ endif
 
 augroup compileInside
   au!
-" run python
+  " run python
   au Bufenter *.py map <F5> :!python %<CR>
 
-  " run c
+  "run c
   au Bufenter *.c map <F5> :!gcc % -lm && ./a.out<CR>
-  " debug c
   au Bufenter *.c map <F6> :!gcc % -g && gdb ./a.out<CR>
-  " memcheck
   au Bufenter *.c map <F7> :!gcc % -g && valgrind ./a.out<CR>
 
-  " run c++
+  " run cpp
   au Bufenter *.cpp map <F5> :!g++ % && ./a.out<CR>
-  "debug c++
   au Bufenter *.cpp map <F6> :!g++ % -g && gdb ./a.out<CR>
-  "memcheck c++
   au Bufenter *.cpp map <F7> :!g++ % -g && valgrind ./a.out<CR>
 
   " run ruby
