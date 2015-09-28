@@ -1,25 +1,20 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/syntastic'
-Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme','racket' }
+Plug 'scrooloose/syntastic', { 'on': []}
+Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'Shougo/neocomplete.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'bling/vim-airline'
-Plug 'garbas/vim-snipmate' | Plug 'indiofish/vim-snippets'
+Plug 'garbas/vim-snipmate',{ 'on': []} | Plug 'indiofish/vim-snippets'
 Plug 'tpope/vim-surround', {'for': 'html'}
 Plug 'indiofish/auto-pairs'
 
 "syntax files
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
-"dependencies
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
-
-"unused syntax files
 "Plug 'kchmck/vim-coffee-script'
 "Plug 'groenewege/vim-less'
 "Plug 'derekwyatt/vim-scala'
@@ -31,11 +26,14 @@ Plug 'tomtom/tlib_vim'
 "Plug 'tikhomirov/vim-glsl'
 "Plug 'digitaltoad/vim-jade'
 
+"dependencies
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
 call plug#end() 
 
-filetype indent on
-filetype plugin on
-syntax on
+"filetype indent on
+"filetype plugin on
+"syntax on
 
 "BASIC SETTINGS
 
@@ -44,8 +42,8 @@ set nocompatible
 set title
 set ignorecase
 set smartcase
-set incsearch
 set autoread
+set incsearch
 set ruler
 set number
 set esckeys
@@ -56,8 +54,8 @@ set expandtab
 set mousehide
 set hidden
 
-set splitright "when opening splits, they go right
 set splitbelow "and below
+set splitright "when opening splits, they go right
 set nrformats=alpha
 set autochdir
 set wrap
@@ -89,10 +87,12 @@ set wildignore=*.o,*~,*.pyc,*.class,*.zip,*.out
 "for vim not gvim; force terminal color 256
 set t_Co=256 
 color molokai
-
-"set background=dark
+set background=dark
 "for terminal's transparent background
 hi normal ctermbg = NONE
+"hi nontext ctermbg = NONE
+"orange
+"hi CursorLineNr ctermfg=202 cterm=bold
 "skyblue
 hi CursorLineNr ctermfg=117 cterm=bold 
 hi LineNr ctermfg=250 ctermbg=none
@@ -185,7 +185,10 @@ vmap <leader>cu <plug>NERDCommenterUncommentgv
 
 "syntastic configuration
 "if racket file hangs while checking, ^C to escape.
-" aux symbols: 
+augroup load_syntastic_snips
+  au!
+  au InsertEnter * call plug#load('vim-snipmate', 'syntastic')
+augroup END
 let g:syntastic_error_symbol = "✗"
 let g:syntastic_warning_symbol = "⚠"
 let g:syntastic_filetype_map = {"scheme" : "racket"}
@@ -253,40 +256,45 @@ if has("autocmd")
   autocmd BufEnter * let &titlestring = expand("%:t") . " :: vim"
 endif
 
+"change number mode
+
+augroup compileInside
+  au!
 " run python
-au Bufenter *.py map <F5> :!python %<CR>
+  au Bufenter *.py map <F5> :!python %<CR>
 
-" run c
-au Bufenter *.c map <F5> :!gcc % -lm && ./a.out<CR>
-" debug c
-au Bufenter *.c map <F6> :!gcc % -g && gdb ./a.out<CR>
-" memcheck
-au Bufenter *.c map <F7> :!gcc % -g && valgrind ./a.out<CR>
+  " run c
+  au Bufenter *.c map <F5> :!gcc % -lm && ./a.out<CR>
+  " debug c
+  au Bufenter *.c map <F6> :!gcc % -g && gdb ./a.out<CR>
+  " memcheck
+  au Bufenter *.c map <F7> :!gcc % -g && valgrind ./a.out<CR>
 
-" run c++
-au Bufenter *.cpp map <F5> :!g++ % && ./a.out<CR>
-"debug c++
-au Bufenter *.cpp map <F6> :!g++ % -g && gdb ./a.out<CR>
-"memcheck c++
-au Bufenter *.cpp map <F7> :!g++ % -g && valgrind ./a.out<CR>
+  " run c++
+  au Bufenter *.cpp map <F5> :!g++ % && ./a.out<CR>
+  "debug c++
+  au Bufenter *.cpp map <F6> :!g++ % -g && gdb ./a.out<CR>
+  "memcheck c++
+  au Bufenter *.cpp map <F7> :!g++ % -g && valgrind ./a.out<CR>
 
-" run ruby
-au Bufenter *.rb map <F5> :!ruby %<CR>
+  " run ruby
+  au Bufenter *.rb map <F5> :!ruby %<CR>
 
-" run java
-au Bufenter *.java map <F4> :!javac % <CR><CR>
-au Bufenter *.java map <F5> :!javac % && java %:r<CR>
+  " run java
+  au Bufenter *.java map <F4> :!javac % <CR><CR>
+  au Bufenter *.java map <F5> :!javac % && java %:r<CR>
 
-" run racket
-au Bufenter *.rkt map <F5> :!racket %<CR>
-au Bufenter *.rkt RainbowParentheses
+  " run racket
+  au Bufenter *.rkt map <F5> :!racket %<CR>
+  au Bufenter *.rkt RainbowParentheses
 
-" run verilog
-au Bufenter *.v map <F5> :!iverilog % && ./a.out<CR>
+  " run verilog
+  au Bufenter *.v map <F5> :!iverilog % && ./a.out<CR>
+augroup END
 
 "FUNCTIONS
 
-"function for displaying current directory with abbreviations
+"function for displaying current directory the way i like it
 function! MyDir()
   " empty flag lets you swap only once
   " parse home directory and the usr name and substitute to ~/
@@ -294,7 +302,6 @@ function! MyDir()
   return cwd . "/"
 endfunction
 
-"* to search visually selected area.
 function! VisualSelection(direction, extra_filter) range
   let l:saved_reg = @"
   execute "normal! vgvy"
