@@ -15,10 +15,10 @@ Run *./setup.sh* to install the plugins
 ...and many more.
 
 # Syntax Files - Many are unused as of now.  
-# Check .vimrc for possible usage
 
 1. **vim-rails** : has_many 등등의 Rails 예약어 highlighting
 2. **vim-ruby** : Ruby
+3. Check .vimrc for possible usage
 
 # Dependencies
 1. **tlib_vim** : Snipmate에 필요
@@ -28,7 +28,7 @@ Run *./setup.sh* to install the plugins
 # Notable .vimrc settings.
 
 1. **map Space to \** : press space where leader key is required
-2. ** * ** in visual mode to search currently selected part.
+2. ***** in visual mode to search currently selected part.
 3. **Ctrl -hjkl** : move between splits easily
 4. **:W** : write a file as sudo.
 5. **\l** : view currently open buffers  
