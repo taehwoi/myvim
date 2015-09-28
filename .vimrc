@@ -234,6 +234,8 @@ let g:neocomplete#auto_completion_start_length = 3
 "fixes a bug that happens where autopairs overwrite neocomplete's smart close
 "option
 let g:AutoPairsMapBS = 0
+inoremap <expr><BS> pumvisible()? neocomplete#smart_close_popup()."\<C-h>" : AutoPairsDelete()
+
 
 
 "Tagbar configuration
