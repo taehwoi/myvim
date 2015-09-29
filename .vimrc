@@ -2,7 +2,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'indiofish/auto-pairs'
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/syntastic', {'on': []}
+Plug 'scrooloose/syntastic', {'on': 'SyntasticCheck'}
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'Shougo/neocomplete.vim'
@@ -182,6 +182,10 @@ vmap <leader>cu <plug>NERDCommenterUncommentgv
 
 "syntastic configuration
 "if racket file hangs while checking, ^C to escape.
+let g:syntastic_mode_map = {
+      \ "mode": "active",
+      \ "active_filetypes": ["c", "scheme", "cpp", "java"],
+      \ "passive_filetypes": [] }
 let g:syntastic_error_symbol = "✗"
 let g:syntastic_warning_symbol = "⚠"
 let g:syntastic_filetype_map = {"scheme" : "racket"}
@@ -211,6 +215,7 @@ if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 let g:airline#extensions#tagbar#enabled = 0
+let g:airline#extensions#syntastic#enabled = 0
 let g:airline#extensions#default#section_truncate_width = {
       \ 'x': 70,
       \ 'z': 45,
