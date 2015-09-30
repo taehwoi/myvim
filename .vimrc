@@ -34,7 +34,7 @@ call plug#end()
 augroup lazyload_plugins
   au!
   au InsertEnter * call plug#load('vim-snipmate')
-  au BufWritePre *.c,*.cpp,*.java,*.rkt call <SID>callSyntastic()
+  au BufWritePre *.c,*.cpp,*.java,*.rkt call plug#load('syntastic')
 augroup END
 
 "filetype indent on
@@ -249,25 +249,28 @@ let g:limelight_priority = -1
 
 "AUTOCMDS
 
+"make and load view files.
 augroup gen_view
   au!
-  autocmd BufWinLeave *.* mkview
-  autocmd BufWinEnter *.* silent loadview
+  autocmd BufWinLeave * mkview
+  autocmd BufWinEnter * silent loadview
 augroup END
 
+augroup movecursor
 if has("autocmd")
-  " When editing a file, always jump to the last known cursor position.
+  " When entering a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
   " (happens when dropping a file on gvim).
-  autocmd BufReadPost * 
+  au!
+  autocmd BufEnter * 
         \ if line("'\"") > 0 && line("'\"") <= line("$") | 
         \   exe "normal g`\"" |
         \ endif 
 
   autocmd BufEnter * let &titlestring = expand("%:t") . " :: vim"
 endif
+augroup END
 
-"change number mode
 
 augroup compileInside
   au!
@@ -328,15 +331,6 @@ function! VisualSelection(direction, extra_filter) range
 
   let @/ = l:pattern
   let @" = l:saved_reg
-endfunction
-
-"au bufWritePre changes cursor position
-"so restore it after calling syntastic
-function! <SID>callSyntastic()
-    let l = line(".")
-    let c = col(".")
-    call plug#load('syntastic')
-    call cursor(l, c)
 endfunction
 
 function! s:goyo_leave()
