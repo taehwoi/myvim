@@ -37,10 +37,6 @@ augroup lazyload_plugins
   au BufWritePre *.c,*.cpp,*.java,*.rkt call plug#load('syntastic')
 augroup END
 
-"filetype indent on
-"filetype plugin on
-"syntax on
-
 "BASIC SETTINGS
 
 set noswapfile
@@ -60,8 +56,8 @@ set expandtab
 set mousehide
 set hidden
 
-set splitbelow "and below
 set splitright "when opening splits, they go right
+set splitbelow "and below
 set nrformats=alpha
 set autochdir
 set wrap
@@ -239,6 +235,7 @@ inoremap <expr><Tab> pumvisible() ? "\<C-J>"
       \: "\<C-R>=snipMate#TriggerSnippet()\<CR>"
   
 
+"GOYO jump to last cursor position upon exit.
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 "Tagbar configuration
@@ -339,5 +336,6 @@ function! VisualSelection(direction, extra_filter) range
 endfunction
 
 function! s:goyo_leave()
+"GOYO jump to last cursor position upon exit.
   ''
 endfunction
