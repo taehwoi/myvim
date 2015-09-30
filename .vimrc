@@ -2,7 +2,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'indiofish/auto-pairs'
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/syntastic', {'on': 'SyntasticCheck'}
+Plug 'scrooloose/syntastic', {'on': []}
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'Shougo/neocomplete.vim'
@@ -31,10 +31,10 @@ Plug 'tpope/vim-rails'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 call plug#end() 
-augroup load_plugins
+augroup lazyload_plugins
   au!
   au InsertEnter * call plug#load('vim-snipmate')
-  au BufWritePre *.c,*.cpp,*.java,*.rkt call plug#load('syntastic')
+  au BufWritePre *.c,*.cpp,*.java,*.rkt call <SID>callSyntastic()
 augroup END
 
 "filetype indent on
@@ -328,6 +328,15 @@ function! VisualSelection(direction, extra_filter) range
 
   let @/ = l:pattern
   let @" = l:saved_reg
+endfunction
+
+"au bufWritePre changes cursor position
+"so restore it after calling syntastic
+function! <SID>callSyntastic()
+    let l = line(".")
+    let c = col(".")
+    call plug#load('syntastic')
+    call cursor(l, c)
 endfunction
 
 function! s:goyo_leave()
