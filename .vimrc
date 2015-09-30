@@ -8,7 +8,7 @@ Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'Shougo/neocomplete.vim'
 Plug 'bling/vim-airline'
 Plug 'garbas/vim-snipmate',{ 'on': []} | Plug 'indiofish/vim-snippets'
-Plug 'tpope/vim-surround', {'for': ['html','scheme']}
+Plug 'tpope/vim-surround'
 Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
@@ -232,7 +232,12 @@ let g:neocomplete#auto_completion_start_length = 3
 "fixes a bug that happens where autopairs overwrite neocomplete's smart close
 "option
 let g:AutoPairsMapBS = 0
-inoremap <expr><BS> pumvisible()? neocomplete#smart_close_popup()."\<C-h>" : AutoPairsDelete()
+inoremap <expr><BS> pumvisible()? neocomplete#smart_close_popup()."\<C-h>" 
+      \: AutoPairsDelete()
+"Tab to complete a snippet, or autocomplete when popup is up
+inoremap <expr><Tab> pumvisible() ? "\<C-J>"
+      \: "\<C-R>=snipMate#TriggerSnippet()\<CR>"
+  
 
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
@@ -252,8 +257,8 @@ let g:limelight_priority = -1
 "make and load view files.
 augroup gen_view
   au!
-  autocmd BufWinLeave *.* mkview
-  autocmd BufWinEnter *.* silent loadview
+  "autocmd BufWinLeave *.* mkview
+  "autocmd BufWinEnter *.* silent loadview
 augroup END
 
 augroup movecursor
