@@ -9,6 +9,6 @@ mkdir ~/.vim
 cp -r colors ~/.vim/
 
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim 
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-vim ./README.md +PlugInstall +qall 
+vim ./README.md +PlugInstall +qall
