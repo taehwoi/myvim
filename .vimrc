@@ -8,7 +8,7 @@ Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'Shougo/neocomplete.vim'
 Plug 'bling/vim-airline'
 Plug 'garbas/vim-snipmate',{ 'on': []} | Plug 'indiofish/vim-snippets'
-Plug 'tpope/vim-surround', {'for': 'html'}
+Plug 'tpope/vim-surround', {'for': ['html','scheme']}
 Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
@@ -252,8 +252,8 @@ let g:limelight_priority = -1
 "make and load view files.
 augroup gen_view
   au!
-  autocmd BufWinLeave * mkview
-  autocmd BufWinEnter * silent loadview
+  autocmd BufWinLeave *.* mkview
+  autocmd BufWinEnter *.* silent loadview
 augroup END
 
 augroup movecursor
@@ -262,7 +262,7 @@ if has("autocmd")
   " Don't do it when the position is invalid or when inside an event handler
   " (happens when dropping a file on gvim).
   au!
-  autocmd BufEnter * 
+  autocmd BufWinEnter * 
         \ if line("'\"") > 0 && line("'\"") <= line("$") | 
         \   exe "normal g`\"" |
         \ endif 
