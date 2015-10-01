@@ -9,7 +9,7 @@ Run *./setup.sh* to install the plugins
 * **nerdcommenter** : "\ + c + c" to comment & uncomment
 * **vim-snipmate** : inc(tab) => #include <stdio.h>, mainn(tab) => int main()... (vim-snippets에 auto-completion 리스트가 있음)
 * **syntastic** : when you save -> show errors
-* **neocomplete** : pops up auto-completion menu -> ctrl+j to select
+* **neocomplete** : pops up auto-completion menu -> tab to select
 * **vim-Tagbar** : \t to view file's tag  
 * ...and many more.
 
