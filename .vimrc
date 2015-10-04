@@ -5,14 +5,17 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/syntastic', {'on': []}
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
-Plug 'Shougo/neocomplete.vim'
 Plug 'bling/vim-airline'
 Plug 'garbas/vim-snipmate',{ 'on': []} | Plug 'indiofish/vim-snippets'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
-
+if has("lua")
+  Plug 'Shougo/neocomplete.vim'
+elseif
+  Plug 'vim-scripts/AutoComplPop'
+endif
 "syntax files
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
