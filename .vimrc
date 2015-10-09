@@ -66,6 +66,7 @@ set pumheight=10 "height of ins-completion-menu
 set completeopt-=preview
 
 set wildmenu " wild char completion menu
+set wildmode=longest:full,full
 set wildignore=*.o,*~,*.pyc,*.class,*.zip,*.out
 let loaded_matchparen = 1
 let &titleold = getcwd()
