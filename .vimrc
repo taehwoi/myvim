@@ -269,6 +269,8 @@ augroup compileInside
 
  " run racket
  au Bufenter *.rkt map <F5> :!racket %<CR>
+ au BufEnter *.rkt let b:AutoPairs 
+       \ = {"(": ")","{": "}", '"': '"', "[": "]"}
 
  " run verilog
  au Bufenter *.v map <F5> :!iverilog % && ./a.out<CR>
