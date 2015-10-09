@@ -242,6 +242,7 @@ augroup lazyload_plugins
  au!
  au InsertEnter * call plug#load('vim-snipmate')
  au BufWritePre *.c,*.cpp,*.java,*.rkt call plug#load('syntastic')
+ au BufEnter *.rkt RainbowParentheses
 augroup END
 
 augroup compileInside
