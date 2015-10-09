@@ -157,6 +157,12 @@ nmap <leader>cu <plug>NERDCommenterUncomment
 vmap <leader>cc <plug>NERDCommenterTogglegv
 vmap <leader>cu <plug>NERDCommenterUncommentgv
 
+"AUTOPairs configuration
+let g:AutoPairsMultilineClose = 0
+let g:AutoPairsFlyMode = 0
+au BufEnter *.rkt let b:AutoPairs 
+      \ = {"(": ")","{": "}", '"': '"', "[": "]"}
+
 "syntastic configuration
 "if racket file hangs while checking, ^C to escape.
 let g:syntastic_filetype_map = {"scheme" : "racket"}
@@ -269,9 +275,6 @@ augroup compileInside
 
  " run racket
  au Bufenter *.rkt map <F5> :!racket %<CR>
- au BufEnter *.rkt let b:AutoPairs 
-       \ = {"(": ")","{": "}", '"': '"', "[": "]"}
-
  " run verilog
  au Bufenter *.v map <F5> :!iverilog % && ./a.out<CR>
 augroup END
