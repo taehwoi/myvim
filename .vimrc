@@ -15,7 +15,7 @@ if has("lua")
  ""Plug 'Shougo/neocomplete.vim'
  ""Plug 'Shougo/neco-syntax'
  Plug 'indiofish/neocomplete.vim'
-elseif
+else
  Plug 'vim-scripts/AutoComplPop'
 endif
 
@@ -63,6 +63,7 @@ set wrap
 set ttimeoutlen=40 "leaving insert mode is done smoothly
 
 set pumheight=10 "height of ins-completion-menu
+set completeopt+=longest,menuone
 set completeopt-=preview
 
 set wildmenu " wild char completion menu
