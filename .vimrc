@@ -11,12 +11,14 @@ Plug 'tpope/vim-surround'
 Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
+
 if has("lua")
- ""Plug 'Shougo/neocomplete.vim'
- ""Plug 'Shougo/neco-syntax'
- Plug 'indiofish/neocomplete.vim'
+  Plug 'indiofish/neocomplete.vim'
 else
- Plug 'vim-scripts/AutoComplPop'
+  inoremap <expr><Tab> pumvisible() ? "\<C-Y>"
+        \: snipMate#CanBeTriggered()? 
+        \"\<C-R>=snipMate#TriggerSnippet()\<CR>" 
+        \: "\<C-X>\<C-I>\<C-N>"
 endif
 
 "dependencies
@@ -189,25 +191,27 @@ let NERDTreeShowHidden=1
 let NERDTreeWinSize=20
 
 "NEOCOMPLETE configuration
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#enable_auto_select = 1
-let g:neocomplete#auto_completion_start_length = 3
-"fixes a bug that happens where autopairs overwrite neocomplete's BS
-let g:AutoPairsMapBS = 0
-inoremap <expr><BS> pumvisible()? neocomplete#smart_close_popup()."\<C-h>" 
-     \: AutoPairsDelete()
+if has("lua")
+  let g:neocomplete#enable_at_startup = 1
+  let g:neocomplete#enable_smart_case = 1
+  let g:neocomplete#enable_auto_select = 1
+  let g:neocomplete#auto_completion_start_length = 3
+  "fixes a bug that happens where autopairs overwrite neocomplete's BS
+  let g:AutoPairsMapBS = 0
+  inoremap <expr><BS> pumvisible()? neocomplete#smart_close_popup()."\<C-h>" 
+        \: AutoPairsDelete()
 
-"Tab to complete a snippet, or autocomplete when popup is up
-"give snipmate priority over auto completion
-inoremap <expr><Tab> snipMate#CanBeTriggered()? 
-     \"\<C-R>=snipMate#TriggerSnippet()\<CR>" 
-     \: pumvisible() ? "\<CR>" : "<TAB>"
+  "Tab to complete a snippet, or autocomplete when popup is up
+  "give snipmate priority over auto completion
+  inoremap <expr><Tab> snipMate#CanBeTriggered()? 
+        \"\<C-R>=snipMate#TriggerSnippet()\<CR>" 
+        \: pumvisible() ? "\<CR>" : "<TAB>"
 
-if !exists('g:neocomplete#keyword_patterns')
-     let g:neocomplete#keyword_patterns = {}
-   endif
-   let g:neocomplete#keyword_patterns._ = '\h\w*'
+  if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+  endif
+  let g:neocomplete#keyword_patterns._ = '\h\w*'
+endif
 
 "GOYO jump to last cursor position upon exit.
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
@@ -222,6 +226,13 @@ let g:tagbar_compact = 1
 "Limelight configuration
 let g:limelight_conceal_ctermfg = 8
 let g:limelight_priority = -1
+
+"ACP
+let g:acp_behaviorKeywordLength = 3
+let g:acp_behaviorKeywordCommand = "\<C-N>"
+let g:acp_completeOption = '.,w,b,k'
+let g:acp_completeoptPreview = 1
+"let g:acp_behavior = {'*': {"command": "\<C-x>\<C-N>"}}
 
 "AUTOCMDS
 
