@@ -15,6 +15,7 @@ Plug 'junegunn/goyo.vim'
 if has("lua")
   Plug 'indiofish/neocomplete.vim'
 else
+  Plug 'vim-scripts/AutoComplPop'
   inoremap <expr><Tab> pumvisible() ? "\<C-Y>"
         \: snipMate#CanBeTriggered()? 
         \"\<C-R>=snipMate#TriggerSnippet()\<CR>" 
@@ -200,7 +201,6 @@ if has("lua")
   let g:AutoPairsMapBS = 0
   inoremap <expr><BS> pumvisible()? neocomplete#smart_close_popup()."\<C-h>" 
         \: AutoPairsDelete()
-
   "Tab to complete a snippet, or autocomplete when popup is up
   "give snipmate priority over auto completion
   inoremap <expr><Tab> snipMate#CanBeTriggered()? 
@@ -211,7 +211,13 @@ if has("lua")
     let g:neocomplete#keyword_patterns = {}
   endif
   let g:neocomplete#keyword_patterns._ = '\h\w*'
+
+else
+  let g:AutoPairsMapBS = 0
+  inoremap <expr><BS> pumvisible()? "\<C-h>" 
+        \: AutoPairsDelete()
 endif
+
 
 "GOYO jump to last cursor position upon exit.
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
@@ -229,7 +235,7 @@ let g:limelight_priority = -1
 
 "ACP
 let g:acp_behaviorKeywordLength = 3
-let g:acp_behaviorKeywordCommand = "\<C-N>"
+let g:acp_behaviorKeywordCommand = ""
 let g:acp_completeOption = '.,w,b,k'
 let g:acp_completeoptPreview = 1
 "let g:acp_behavior = {'*': {"command": "\<C-x>\<C-N>"}}
