@@ -1,3 +1,4 @@
+language messages C
 set nocompatible
 call plug#begin('~/.vim/plugged')
 
@@ -15,13 +16,14 @@ Plug 'junegunn/goyo.vim'
 if has("lua")
   Plug 'indiofish/neocomplete.vim'
 else
-  Plug 'vim-scripts/AutoComplPop'
-  "inoremap <expr><Tab> pumvisible() ? "\<C-Y>"
-        "\: snipMate#CanBeTriggered()? 
-        "\"\<C-R>=snipMate#TriggerSnippet()\<CR>"
-        "\:"\<C-N>\<C-N>"
-  inoremap <expr><Tab> pumvisible() ? "\<C-Y>"
-        \:"\<C-R>=snipMate#TriggerSnippet()\<CR>"
+  "Plug 'vim-scripts/AutoComplPop'
+  inoremap <silent><expr><Tab> pumvisible() ? "\<C-Y>"
+        \: snipMate#CanBeTriggered()?
+        \"\<C-R>=snipMate#TriggerSnippet()\<CR>"
+        \: Smart_TabComplete(3)
+   
+  "inoremap <expr><silent><Tab> pumvisible() ? "\<C-Y>"
+        "\:"\<C-R>=snipMate#TriggerSnippet()\<CR>"
 endif
 
 "dependencies
@@ -34,6 +36,7 @@ call plug#end()
 set encoding=UTF-8
 set fileencodings=UTF-8
 set noswapfile
+
 set title
 set ignorecase
 set smartcase
@@ -67,7 +70,9 @@ set laststatus=2 "enabled to show statusline(airline)
 set wrap
 set ttimeoutlen=40 "leaving insert mode is done smoothly
 
-set pumheight=10 "height of ins-completion-menu
+set pumheight=5 "height of ins-completion-menu
+set foldmethod=manual
+set complete=.,b,i
 set completeopt+=longest,menuone
 set completeopt-=preview
 
@@ -216,7 +221,7 @@ if has("lua")
 
 else
   let g:AutoPairsMapBS = 0
-  inoremap <expr><BS> pumvisible()? "\<C-h>" 
+  inoremap <expr><BS> pumvisible()? "\<C-E>\<C-h>" 
         \: AutoPairsDelete()
 endif
 
@@ -239,7 +244,7 @@ let g:limelight_priority = -1
 let g:acp_behaviorKeywordLength = 3
 let g:acp_behaviorKeywordCommand = "\<C-N>"
 let g:acp_completeoptPreview = 1
-let g:acp_completeOption = '.,w,b,k,i,d,t'
+let g:acp_completeOption='.,b,i'
 
 "AUTOCMDS
 
@@ -325,7 +330,38 @@ function! VisualSelection(direction, extra_filter) range
  let @" = l:saved_reg
 endfunction
 
+function! Smart_TabComplete(min_len)
+  let line = getline('.')                         " current line
+
+  let substr = strpart(line, -1, col('.'))      " from the start of the current
+                                                  " line to one character right
+                                                  " of the cursor
+  let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
+  let len = strlen(substr)
+  echo len
+  if (len==0)                          " nothing to match on empty string
+    return "\<tab>"
+  endif
+  let has_period = match(substr, '\.') != -1      " position of period, if any
+  let has_slash = match(substr, '\/') != -1       " position of slash, if any
+  if (!has_period && !has_slash && len>=a:min_len)
+    return "\<C-N>\<C-N>"
+  elseif ( has_slash )
+    startinsert
+    return "\<C-X>\<C-F>\<C-N>"                  
+  else
+    return "\<tab>"                         " plugin matching
+  endif
+endfunction
+
+function! GotoInsert()
+  startinsert
+  "call feedkeys("\<C-N>\<C-N>",'i')
+endfunction
+
+
 function! s:goyo_leave()
  ""GOYO jump to last cursor position upon exit.
  ''
 endfunction
+
