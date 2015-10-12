@@ -18,8 +18,8 @@ else
   Plug 'vim-scripts/AutoComplPop'
   inoremap <expr><Tab> pumvisible() ? "\<C-Y>"
         \: snipMate#CanBeTriggered()? 
-        \"\<C-R>=snipMate#TriggerSnippet()\<CR>" 
-        \: "\<C-X>\<C-I>\<C-N>"
+        \"\<C-R>=snipMate#TriggerSnippet()\<CR>"
+        \:"\<C-N>\<C-N>"
 endif
 
 "dependencies
@@ -68,6 +68,7 @@ set ttimeoutlen=40 "leaving insert mode is done smoothly
 set pumheight=10 "height of ins-completion-menu
 set completeopt+=longest,menuone
 set completeopt-=preview
+"set complete=".,w,b,u,t,i"
 
 set wildmenu " wild char completion menu
 set wildmode=longest:full,full
@@ -234,11 +235,9 @@ let g:limelight_conceal_ctermfg = 8
 let g:limelight_priority = -1
 
 "ACP
-let g:acp_behaviorKeywordLength = 3
-let g:acp_behaviorKeywordCommand = ""
-let g:acp_completeOption = '.,w,b,k'
+let g:acp_behaviorKeywordLength = 99
+let g:acp_behaviorKeywordCommand = "\<C-N>"
 let g:acp_completeoptPreview = 1
-"let g:acp_behavior = {'*': {"command": "\<C-x>\<C-N>"}}
 
 "AUTOCMDS
 
