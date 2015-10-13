@@ -15,7 +15,7 @@ Plug 'junegunn/goyo.vim'
 if has("lua")
   Plug 'indiofish/neocomplete.vim'
 else
-  "Plug 'vim-scripts/AutoComplPop'
+  Plug 'vim-scripts/AutoComplPop'
   inoremap <silent><expr><Tab> pumvisible() ? "\<C-Y>"
         \: snipMate#CanBeTriggered()?
         \"\<C-R>=snipMate#TriggerSnippet()\<CR>"
@@ -39,6 +39,7 @@ set noswapfile
 set title
 set ignorecase
 set smartcase
+set infercase
 set autoread
 set incsearch
 set esckeys "allow arrow key
@@ -339,12 +340,13 @@ function! Smart_TabComplete(min_len)
   let has_period = match(substr, '\.') != -1      " position of period, if any
   let has_slash = match(substr, '\/') != -1       " position of slash, if any
   if (!has_period && !has_slash && len>=a:min_len)
-    return "\<C-N>\<C-N>"
+    return "\<C-P>\<C-P>"
   elseif ( has_slash )
-    startinsert
     return "\<C-X>\<C-F>\<C-N>"                  
-  else
+  elseif (has_period)
     return "\<C-X>\<C-O>"                         " plugin matching
+  else
+    return "\<tab>"
   endif
 endfunction
 
