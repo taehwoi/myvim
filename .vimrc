@@ -12,7 +12,6 @@ Plug 'tpope/vim-surround'
 Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
-
 if has("lua")
   Plug 'indiofish/neocomplete.vim'
 else
@@ -32,7 +31,7 @@ Plug 'tomtom/tlib_vim'
 call plug#end() 
 
 "BASIC SETTINGS
-
+set omnifunc=syntaxcomplete#Complete
 set encoding=UTF-8
 set fileencodings=UTF-8
 set noswapfile
@@ -53,6 +52,7 @@ set hidden "keeps buffer
 set splitright "when opening splits, they go right
 set splitbelow "and below
 set nrformats=alpha "alphabets are treated like numbers
+set autowrite
 set autochdir
 set autoindent
 set smartindent
@@ -65,7 +65,6 @@ set backspace=eol,start,indent
 set showcmd
 set number
 set rnu "relative number lines
-set autowrite
 set laststatus=2 "enabled to show statusline(airline)
 set wrap
 set ttimeoutlen=40 "leaving insert mode is done smoothly
@@ -98,12 +97,7 @@ color molokai
 "STATUSLINE CONFIGURATION
 set statusline=*PATH:\ 
 set statusline+=\[%.20{pathshorten(MyDir())}%t\] "file path shortened
-set statusline+=%h      "help file flag
-set statusline+=%m      "modified flag
-set statusline+=%r      "read only flag
-set statusline+=%=      "left/right separator
-set statusline+=%y\   "filetype
-set statusline+=Ln:%04l/%04L   "cursor line/total lines
+set statusline+=%h%m%r%=%y\ Ln:%04l/%04L      "flags and LineNum
 
 "KEYMAPS
 
@@ -151,7 +145,7 @@ nnoremap [l  :lprev<CR>
 nnoremap ]l  :lnext<CR>
 
 "press enter to disable highlight
-nnoremap <CR> :noh<CR><CR>:<backspace>
+nnoremap <silent><CR> :noh<CR><CR>:<backspace>
 "search visually selected area
 vnoremap <silent>* :call VisualSelection('f', '')<CR>
 vnoremap <silent># :call VisualSelection('b', '')<CR>
@@ -187,7 +181,7 @@ let g:syntastic_cpp_compiler = 'g++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
 let g:syntastic_verilog_compiler = 'iverilog'
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_loc_list_height = 4
+let g:syntastic_loc_list_height = 3
 let g:syntastic_check_on_wq = 0
 let g:syntastic_auto_jump = 3
 highlight SyntasticErrorSign ctermfg=0 ctermbg=168
@@ -350,7 +344,7 @@ function! Smart_TabComplete(min_len)
     startinsert
     return "\<C-X>\<C-F>\<C-N>"                  
   else
-    return "\<tab>"                         " plugin matching
+    return "\<C-X>\<C-O>"                         " plugin matching
   endif
 endfunction
 
@@ -359,9 +353,7 @@ function! GotoInsert()
   "call feedkeys("\<C-N>\<C-N>",'i')
 endfunction
 
-
 function! s:goyo_leave()
  ""GOYO jump to last cursor position upon exit.
  ''
 endfunction
-
