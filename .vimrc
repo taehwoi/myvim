@@ -49,6 +49,7 @@ set nomodeline
 set expandtab
 set mousehide
 set hidden "keeps buffer
+set viminfo=:20,'20,@0,<0
 
 set splitright "when opening splits, they go right
 set splitbelow "and below
