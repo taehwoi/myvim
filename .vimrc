@@ -10,12 +10,13 @@ Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'garbas/vim-snipmate',{ 'on': []} | Plug 'indiofish/vim-snippets'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
+au BufEnter *.rkt RainbowParentheses
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
 if has("lua")
   Plug 'indiofish/neocomplete.vim'
 else
-  Plug 'vim-scripts/AutoComplPop'
+  "Plug 'vim-scripts/AutoComplPop'
   inoremap <silent><expr><Tab> pumvisible() ? "\<C-Y>"
         \: snipMate#CanBeTriggered()?
         \"\<C-R>=snipMate#TriggerSnippet()\<CR>"
@@ -88,18 +89,19 @@ set t_Co=256 "force terminal color 256
 augroup load_colors
  au!
  au ColorScheme * set background=dark
+ au ColorScheme * hi Normal ctermbg = NONE
  au ColorScheme * hi CursorLineNr ctermfg=117 cterm=bold 
  au ColorScheme * hi LineNr ctermfg=250 ctermbg=none
  au ColorScheme * hi Pmenu ctermfg=250 ctermbg=8
  au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
- au ColorScheme * hi Normal ctermbg = NONE
 augroup END
 color molokai
 
 "STATUSLINE CONFIGURATION
 set statusline=*PATH:\ 
 set statusline+=\[%.20{pathshorten(MyDir())}%t\] "file path shortened
-set statusline+=%h%m%r%=%y\ Ln:%04l/%04L      "flags and LineNum
+set statusline+=%(\ [%M%R%H]%)
+set statusline+=%=\ Ln:%04l/%04L      "flags and LineNum
 
 "KEYMAPS
 
@@ -182,8 +184,6 @@ let g:syntastic_warning_symbol = "!!"
 let g:syntastic_cpp_compiler = 'g++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
 let g:syntastic_verilog_compiler = 'iverilog'
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_loc_list_height = 3
 let g:syntastic_check_on_wq = 0
 let g:syntastic_auto_jump = 3
 highlight SyntasticErrorSign ctermfg=0 ctermbg=168
@@ -219,7 +219,13 @@ else
   let g:AutoPairsMapBS = 0
   inoremap <expr><BS> pumvisible()? "\<C-E>\<C-h>" 
         \: AutoPairsDelete()
+
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '~/.ctxt',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
 endif
+"set dictionary=~/.ctxt
 
 
 "GOYO jump to last cursor position upon exit.
@@ -268,35 +274,31 @@ augroup lazyload_plugins
  au!
  au InsertEnter * call plug#load('vim-snipmate')
  au BufWritePre *.c,*.cpp,*.java,*.rkt call plug#load('syntastic')
- au BufEnter *.rkt RainbowParentheses
 augroup END
+
 
 augroup compileInside
  au!
+ "space r(un) to run a code.
  " run python
- au Bufenter *.py map <F5> :!python %<CR>
+ au Bufenter *.py map <Space>r :!python %<CR>
 
  "run c
- au Bufenter *.c map <F5> :!gcc % -lm && ./a.out<CR>
+ au Bufenter *.c map <space>r :!gcc % -lm && ./a.out<CR>
  au Bufenter *.c map <F6> :!gcc % -g && gdb ./a.out<CR>
- au Bufenter *.c map <F7> :!gcc % -g && valgrind ./a.out<CR>
 
  " run cpp
- au Bufenter *.cpp map <F5> :!g++ % && ./a.out<CR>
+ au Bufenter *.cpp map <Space>r :!g++ % && ./a.out<CR>
  au Bufenter *.cpp map <F6> :!g++ % -g && gdb ./a.out<CR>
- au Bufenter *.cpp map <F7> :!g++ % -g && valgrind ./a.out<CR>
-
- " run ruby
- au Bufenter *.rb map <F5> :!ruby %<CR>
 
  " run java
  au Bufenter *.java map <F4> :!javac % <CR><CR>
- au Bufenter *.java map <F5> :!javac % && java %:r<CR>
+ au Bufenter *.java map <space>r :!javac % && java %:r<CR>
 
  " run racket
- au Bufenter *.rkt map <F5> :!racket %<CR>
+ au Bufenter *.rkt map <space>r :!racket %<CR>
  " run verilog
- au Bufenter *.v map <F5> :!iverilog % && ./a.out<CR>
+ au Bufenter *.v map <space>r :!iverilog % && ./a.out<CR>
 augroup END
 
 "FUNCTIONS
@@ -341,7 +343,7 @@ function! Smart_TabComplete(min_len)
   let has_period = match(substr, '\.') != -1      " position of period, if any
   let has_slash = match(substr, '\/') != -1       " position of slash, if any
   if (!has_period && !has_slash && len>=a:min_len)
-    return "\<C-P>\<C-P>"
+    return "\<C-N>\<C-N>"
   elseif ( has_slash )
     return "\<C-X>\<C-F>\<C-N>"                  
   elseif (has_period)
