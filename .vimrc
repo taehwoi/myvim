@@ -281,19 +281,19 @@ nmap <space>r :Run<CR>
 nmap <f5> :Run<CR>
 augroup Run
  au!
- au Bufenter *.python command Run !python %
+ au Bufenter *.python command! Run !python %
 
- au Bufenter *.c command Run !gcc % -lm && ./a.out
+ au Bufenter *.c command! Run !gcc % -lm && ./a.out
  au Bufenter *.c map <F6> :!gcc % -g && gdb ./a.out<CR>
  "au Bufenter *.c set makeprg=gcc\ %\ -lm
 
- au Bufenter *.c command Run !g++ % && ./a.out
+ au Bufenter *.c command! Run !g++ % && ./a.out
  au Bufenter *.cpp map <F6> :!g++ % -g && gdb ./a.out<CR>
 
- au Bufenter *.c command Run !javac % && java %:r
+ au Bufenter *.java command! Run !javac % && java %:r
  au Bufenter *.java map <F4> :!javac % <CR><CR>
 
- au Bufenter *.rkt command Run !racket %
+ au Bufenter *.rkt command! Run !racket %
  "au Bufenter *.rkt set makeprg=racket\ %
 augroup END
 
