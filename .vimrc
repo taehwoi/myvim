@@ -55,7 +55,7 @@ set viminfo=:20,'20,@0,<0
 set splitright "when opening splits, they go right
 set splitbelow "and below
 set nrformats=alpha "alphabets are treated like numbers
-set autowrite
+"set autowrite
 set autochdir
 set autoindent
 set smartindent
@@ -277,28 +277,24 @@ augroup lazyload_plugins
 augroup END
 
 
-augroup compileInside
+nmap <space>r :Run<CR>
+nmap <f5> :Run<CR>
+augroup Run
  au!
- "space r(un) to run a code.
- " run python
- au Bufenter *.py map <Space>r :!python %<CR>
+ au Bufenter *.python command Run !python %
 
- "run c
- au Bufenter *.c map <space>r :!gcc % -lm && ./a.out<CR>
+ au Bufenter *.c command Run !gcc % -lm && ./a.out
  au Bufenter *.c map <F6> :!gcc % -g && gdb ./a.out<CR>
+ "au Bufenter *.c set makeprg=gcc\ %\ -lm
 
- " run cpp
- au Bufenter *.cpp map <Space>r :!g++ % && ./a.out<CR>
+ au Bufenter *.c command Run !g++ % && ./a.out
  au Bufenter *.cpp map <F6> :!g++ % -g && gdb ./a.out<CR>
 
- " run java
+ au Bufenter *.c command Run !javac % && java %:r
  au Bufenter *.java map <F4> :!javac % <CR><CR>
- au Bufenter *.java map <space>r :!javac % && java %:r<CR>
 
- " run racket
- au Bufenter *.rkt map <space>r :!racket %<CR>
- " run verilog
- au Bufenter *.v map <space>r :!iverilog % && ./a.out<CR>
+ au Bufenter *.rkt command Run !racket %
+ "au Bufenter *.rkt set makeprg=racket\ %
 augroup END
 
 "FUNCTIONS
