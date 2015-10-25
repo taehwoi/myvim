@@ -96,11 +96,14 @@ augroup load_colors
   au ColorScheme * hi Pmenu ctermfg=250 ctermbg=8
   au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
 augroup END
-color molokai
+filetype detect
+if (&ft != 'text' && &ft != 'markdown')
+  color molokai
+endif
 
-augroup read_mode
+augroup readtxt
   autocmd!
-  au FileType {text,markdown} color PaperColor
+  "au FileType {text,markdown} color PaperColor
   au FileType {text,markdown} set background=light
   au FileType {text,markdown} hi Normal ctermfg=234 ctermbg=253
   "au BufEnter *.txt hi Normal ctermbg=253
