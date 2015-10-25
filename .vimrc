@@ -103,10 +103,8 @@ endif
 
 augroup readtxt
   autocmd!
-  "au FileType {text,markdown} color PaperColor
   au FileType {text,markdown} set background=light
   au FileType {text,markdown} hi Normal ctermfg=234 ctermbg=253
-  "au BufEnter *.txt hi Normal ctermbg=253
   au FileType {text,markdown} :Goyo
   au FileType {text,markdown} :Limelight
 augroup END
