@@ -17,13 +17,13 @@ if has("lua")
   Plug 'indiofish/neocomplete.vim'
 else
   "Plug 'vim-scripts/AutoComplPop'
+  "inoremap <expr><silent><Tab> pumvisible() ? "\<C-Y>"
+        "\:"\<C-R>=snipMate#TriggerSnippet()\<CR>"
+
   inoremap <silent><expr><Tab> pumvisible() ? "\<C-Y>"
         \: snipMate#CanBeTriggered()?
         \"\<C-R>=snipMate#TriggerSnippet()\<CR>"
         \: Smart_TabComplete(3)
-   
-  "inoremap <expr><silent><Tab> pumvisible() ? "\<C-Y>"
-        "\:"\<C-R>=snipMate#TriggerSnippet()\<CR>"
 endif
 
 "dependencies
@@ -86,16 +86,28 @@ let &titleold = getcwd()
 
 "COLOR CONFIGURATION
 set t_Co=256 "force terminal color 256
+
 augroup load_colors
- au!
- au ColorScheme * set background=dark
- au ColorScheme * hi Normal ctermbg = NONE
- au ColorScheme * hi CursorLineNr ctermfg=117 cterm=bold 
- au ColorScheme * hi LineNr ctermfg=250 ctermbg=none
- au ColorScheme * hi Pmenu ctermfg=250 ctermbg=8
- au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
+  au!
+  au ColorScheme * set background=dark
+  au ColorScheme * hi Normal ctermbg = NONE
+  au ColorScheme * hi CursorLineNr ctermfg=117 cterm=bold 
+  au ColorScheme * hi LineNr ctermfg=250 ctermbg=none
+  au ColorScheme * hi Pmenu ctermfg=250 ctermbg=8
+  au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
 augroup END
 color molokai
+
+augroup read_mode
+  autocmd!
+  au FileType {text,markdown} color PaperColor
+  au FileType {text,markdown} set background=light
+  au FileType {text,markdown} hi Normal ctermfg=234 ctermbg=253
+  "au BufEnter *.txt hi Normal ctermbg=253
+  au FileType {text,markdown} :Goyo
+  au FileType {text,markdown} :Limelight
+augroup END
+
 
 "STATUSLINE CONFIGURATION
 set statusline=*PATH:\ 
@@ -176,13 +188,14 @@ au BufEnter *.rkt let b:AutoPairs
 "if racket file hangs while checking, ^C to escape.
 let g:syntastic_filetype_map = {"scheme" : "racket"}
 let g:syntastic_mode_map = {
-     \ "mode": "active",
-     \ "active_filetypes": ["c", "scheme", "cpp", "java"],
-     \ "passive_filetypes": [] }
+      \ "mode": "active",
+      \ "active_filetypes": ["c", "scheme", "cpp", "java"],
+      \ "passive_filetypes": [] }
 let g:syntastic_error_symbol = "X!"
 let g:syntastic_warning_symbol = "!!"
 let g:syntastic_cpp_compiler = 'g++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
+let g:syntastic_java_javac_classpath= '../../'
 let g:syntastic_verilog_compiler = 'iverilog'
 let g:syntastic_check_on_wq = 0
 let g:syntastic_auto_jump = 3
@@ -220,9 +233,9 @@ else
   inoremap <expr><BS> pumvisible()? "\<C-E>\<C-h>" 
         \: AutoPairsDelete()
 
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '~/.ctxt',
-    \ 'scheme' : $HOME.'/.gosh_completions'
+  let g:neocomplete#sources#dictionary#dictionaries = {
+        \ 'default' : '~/.ctxt',
+        \ 'scheme' : $HOME.'/.gosh_completions'
         \ }
 endif
 "set dictionary=~/.ctxt
@@ -239,7 +252,7 @@ let g:tagbar_sort = 0
 let g:tagbar_compact = 1
 
 "Limelight configuration
-let g:limelight_conceal_ctermfg = 8
+let g:limelight_conceal_ctermfg = 248
 let g:limelight_priority = -1
 
 "ACP
@@ -251,85 +264,84 @@ let g:acp_completeOption='.,b,i'
 "AUTOCMDS
 
 augroup format
- au!
- au FileType * set formatoptions-=o
+  au!
+  au FileType * set formatoptions-=o
 augroup END
 
 augroup movecursor
- if has("autocmd")
-   " When entering a file, always jump to the last known cursor position.
-   " Don't do it when the position is invalid or when inside an event handler
-   " (happens when dropping a file on gvim).
-   au!
-   autocmd BufWinEnter * 
-         \ if line("'\"") > 0 && line("'\"") <= line("$") | 
-         \   exe "normal g`\"" |
-         \ endif 
+  if has("autocmd")
+    " When entering a file, always jump to the last known cursor position.
+    " Don't do it when the position is invalid or when inside an event handler
+    " (happens when dropping a file on gvim).
+    au!
+    autocmd BufWinEnter * 
+          \ if line("'\"") > 0 && line("'\"") <= line("$") | 
+          \   exe "normal g`\"" |
+          \ endif 
 
-   autocmd BufEnter * let &titlestring = expand("%:t") . " :: vim"
- endif
+    autocmd BufEnter * let &titlestring = expand("%:t") . " :: vim"
+  endif
 augroup END
 
 augroup lazyload_plugins
- au!
- au InsertEnter * call plug#load('vim-snipmate')
- au BufWritePre *.c,*.cpp,*.java,*.rkt call plug#load('syntastic')
+  au!
+  au InsertEnter * call plug#load('vim-snipmate')
+  au BufWritePre *.c,*.cpp,*.java,*.rkt call plug#load('syntastic')
 augroup END
 
 
 nmap <space>r :Run<CR>
 nmap <f5> :Run<CR>
 augroup Run
- au!
- au Bufenter *.python command! Run !python %
+  au!
+  au Bufenter *.python command! Run !python %
 
- au Bufenter *.c command! Run !gcc % -lm && ./a.out
- au Bufenter *.c map <F6> :!gcc % -g && gdb ./a.out<CR>
- "au Bufenter *.c set makeprg=gcc\ %\ -lm
+  au Bufenter *.c command! Run !gcc % -lm && ./a.out
+  au Bufenter *.c map <F6> :!gcc % -g && gdb ./a.out<CR>
+  "au Bufenter *.c set makeprg=gcc\ %\ -lm
 
- au Bufenter *.c command! Run !g++ % && ./a.out
- au Bufenter *.cpp map <F6> :!g++ % -g && gdb ./a.out<CR>
+  au Bufenter *.c command! Run !g++ % && ./a.out
+  au Bufenter *.cpp map <F6> :!g++ % -g && gdb ./a.out<CR>
 
- au Bufenter *.java command! Run !javac % && java %:r
- au Bufenter *.java map <F4> :!javac % <CR><CR>
+  au Bufenter *.java command! Run !javac % && java %:r
+  au Bufenter *.java map <F4> :!javac % <CR><CR>
 
- au Bufenter *.rkt command! Run !racket %
- "au Bufenter *.rkt set makeprg=racket\ %
+  au Bufenter *.rkt command! Run !racket %
+  "au Bufenter *.rkt set makeprg=racket\ %
 augroup END
 
 "FUNCTIONS
 
 "function for displaying current directory the way i like it
 function! MyDir()
- " empty flag lets you swap only once
- " parse home directory and the usr name and substitute to ~/
- let cwd = substitute(getcwd(),'/home/\h\w*',"~","")
- return cwd . "/"
+  " empty flag lets you swap only once
+  " parse home directory and the usr name and substitute to ~/
+  let cwd = substitute(getcwd(),'/home/\h\w*',"~","")
+  return cwd . "/"
 endfunction
 
 function! VisualSelection(direction, extra_filter) range
- let l:saved_reg = @"
- execute "normal! vgvy"
+  let l:saved_reg = @"
+  execute "normal! vgvy"
 
- let l:pattern = escape(@", '\\/.*$^~[]')
- let l:pattern = substitute(l:pattern, "\n$", "", "")
+  let l:pattern = escape(@", '\\/.*$^~[]')
+  let l:pattern = substitute(l:pattern, "\n$", "", "")
 
- if a:direction == 'b'
-   execute "normal ?" . l:pattern . "^M"
- elseif a:direction == 'f'
-   execute "normal /" . l:pattern . "^M"
- endif
+  if a:direction == 'b'
+    execute "normal ?" . l:pattern . "^M"
+  elseif a:direction == 'f'
+    execute "normal /" . l:pattern . "^M"
+  endif
 
- let @/ = l:pattern
- let @" = l:saved_reg
+  let @/ = l:pattern
+  let @" = l:saved_reg
 endfunction
 
 function! Smart_TabComplete(min_len)
   let line = getline('.')                         " current line
 
   let substr = strpart(line, -1, col('.'))      " from the start of the current
-                                                  " line to one character right
-                                                  " of the cursor
+  " line to one character right of the cursor
   let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
   let len = strlen(substr)
   echo len
@@ -354,7 +366,23 @@ function! GotoInsert()
   "call feedkeys("\<C-N>\<C-N>",'i')
 endfunction
 
-function! s:goyo_leave()
- ""GOYO jump to last cursor position upon exit.
- ''
+function! s:goyo_enter()
+  let b:quitting = 0
+  let b:quitting_bang = 0
+  autocmd QuitPre <buffer> let b:quitting = 1
+  cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
 endfunction
+
+function! s:goyo_leave()
+  " Quit Vim if this is the only remaining buffer
+  if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
+    if b:quitting_bang
+      qa!
+    else
+      qa
+    endif
+  endif
+endfunction
+
+autocmd User GoyoEnter call <SID>goyo_enter()
+autocmd User GoyoLeave call <SID>goyo_leave()
