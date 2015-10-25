@@ -100,7 +100,6 @@ color molokai
 
 augroup read_mode
   autocmd!
-  au FileType {text,markdown} color PaperColor
   au FileType {text,markdown} set background=light
   au FileType {text,markdown} hi Normal ctermfg=234 ctermbg=253
   "au BufEnter *.txt hi Normal ctermbg=253
