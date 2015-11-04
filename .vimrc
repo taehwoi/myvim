@@ -1,7 +1,6 @@
 language messages C
 set nocompatible
 call plug#begin('~/.vim/plugged')
-
 Plug 'indiofish/auto-pairs'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/syntastic', {'on': []}
@@ -54,7 +53,7 @@ set viminfo=:20,'20,@0,<0
 
 set splitright "when opening splits, they go right
 set splitbelow "and below
-set nrformats=alpha "alphabets are treated like numbers
+set nrformats=hex 
 "set autowrite
 set autochdir
 set autoindent
@@ -70,7 +69,7 @@ set number
 set rnu "relative number lines
 set laststatus=2 "enabled to show statusline(airline)
 set wrap
-set ttimeoutlen=40 "leaving insert mode is done smoothly
+set ttimeoutlen=40
 
 set pumheight=5 "height of ins-completion-menu
 set foldmethod=manual
@@ -79,6 +78,7 @@ set completeopt+=longest,menuone
 set completeopt-=preview
 
 set wildmenu " wild char completion menu
+set wildignorecase
 set wildmode=longest:full,full
 set wildignore=*.o,*~,*.pyc,*.class,*.zip,*.out
 let loaded_matchparen = 1
@@ -86,15 +86,15 @@ let &titleold = getcwd()
 
 "COLOR CONFIGURATION
 set t_Co=256 "force terminal color 256
-
+let g:rehash256 = 1
 augroup load_colors
   au!
-  au ColorScheme * set background=dark
-  au ColorScheme * hi Normal ctermbg = NONE
-  au ColorScheme * hi CursorLineNr ctermfg=117 cterm=bold 
-  au ColorScheme * hi LineNr ctermfg=250 ctermbg=none
-  au ColorScheme * hi Pmenu ctermfg=250 ctermbg=8
-  au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
+  "au ColorScheme * set background=dark
+  "au ColorScheme * hi Normal ctermbg = NONE
+  "au ColorScheme * hi CursorLineNr ctermfg=117 cterm=bold 
+  "au ColorScheme * hi LineNr ctermfg=250 ctermbg=none
+  "au ColorScheme * hi Pmenu ctermfg=250 ctermbg=8
+  "au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
 augroup END
 filetype detect
 if (&ft != 'text' && &ft != 'markdown')
@@ -104,9 +104,8 @@ endif
 augroup readtxt
   autocmd!
   au FileType {text,markdown} set background=light
-  au FileType {text,markdown} hi Normal ctermfg=234 ctermbg=253
+  au FileType {text,markdown} hi Normal ctermfg=234 ctermbg=255
   au FileType {text,markdown} :Goyo
-  au FileType {text,markdown} :Limelight
 augroup END
 
 
