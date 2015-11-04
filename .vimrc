@@ -9,7 +9,7 @@ Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'garbas/vim-snipmate',{ 'on': []} | Plug 'indiofish/vim-snippets'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
-au BufEnter *.rkt RainbowParentheses
+  au BufEnter *.rkt RainbowParentheses
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
 if has("lua")
@@ -31,6 +31,7 @@ Plug 'tomtom/tlib_vim'
 call plug#end() 
 
 "BASIC SETTINGS
+filetype detect
 set omnifunc=syntaxcomplete#Complete
 set encoding=UTF-8
 set fileencodings=UTF-8
@@ -54,7 +55,6 @@ set viminfo=:20,'20,@0,<0
 set splitright "when opening splits, they go right
 set splitbelow "and below
 set nrformats=hex 
-"set autowrite
 set autochdir
 set autoindent
 set smartindent
@@ -70,6 +70,7 @@ set rnu "relative number lines
 set laststatus=2 "enabled to show statusline(airline)
 set wrap
 set ttimeoutlen=40
+"set autowrite
 
 set pumheight=5 "height of ins-completion-menu
 set foldmethod=manual
@@ -85,18 +86,17 @@ let loaded_matchparen = 1
 let &titleold = getcwd()
 
 "COLOR CONFIGURATION
-set t_Co=256 "force terminal color 256
+set t_Co=256
 let g:rehash256 = 1
 augroup load_colors
   au!
-  "au ColorScheme * set background=dark
-  "au ColorScheme * hi Normal ctermbg = NONE
-  "au ColorScheme * hi CursorLineNr ctermfg=117 cterm=bold 
-  "au ColorScheme * hi LineNr ctermfg=250 ctermbg=none
-  "au ColorScheme * hi Pmenu ctermfg=250 ctermbg=8
-  "au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
+  au ColorScheme * set background=dark
+  au ColorScheme * hi Normal ctermbg = NONE
+  au ColorScheme * hi CursorLineNr ctermfg=117 cterm=bold 
+  au ColorScheme * hi LineNr ctermfg=250 ctermbg=none
+  au ColorScheme * hi Pmenu ctermfg=250 ctermbg=8
+  au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
 augroup END
-filetype detect
 if (&ft != 'text' && &ft != 'markdown')
   color molokai
 endif
@@ -195,7 +195,7 @@ let g:syntastic_error_symbol = "X!"
 let g:syntastic_warning_symbol = "!!"
 let g:syntastic_cpp_compiler = 'g++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
-let g:syntastic_java_javac_classpath= '../../'
+let g:syntastic_java_javac_classpath= './'
 let g:syntastic_verilog_compiler = 'iverilog'
 let g:syntastic_check_on_wq = 0
 let g:syntastic_auto_jump = 3
@@ -232,14 +232,7 @@ else
   let g:AutoPairsMapBS = 0
   inoremap <expr><BS> pumvisible()? "\<C-E>\<C-h>" 
         \: AutoPairsDelete()
-
-  let g:neocomplete#sources#dictionary#dictionaries = {
-        \ 'default' : '~/.ctxt',
-        \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
 endif
-"set dictionary=~/.ctxt
-
 
 "GOYO jump to last cursor position upon exit.
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
@@ -285,10 +278,11 @@ augroup END
 
 augroup lazyload_plugins
   au!
-  au InsertEnter * call plug#load('vim-snipmate')
+  if (&ft != 'text' && &ft != 'markdown')
+    au InsertEnter * call plug#load('vim-snipmate')
+  endif
   au BufWritePre *.c,*.cpp,*.java,*.rkt call plug#load('syntastic')
 augroup END
-
 
 nmap <space>r :Run<CR>
 nmap <f5> :Run<CR>
