@@ -12,6 +12,7 @@ Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
   au BufEnter *.rkt RainbowParentheses
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
+Plug 'junegunn/seoul256.vim'
 if has("lua")
   Plug 'indiofish/neocomplete.vim'
 else
@@ -36,6 +37,7 @@ set omnifunc=syntaxcomplete#Complete
 set encoding=UTF-8
 set fileencodings=UTF-8
 set noswapfile
+set shortmess=a
 
 set title
 set ignorecase
@@ -91,14 +93,16 @@ let g:rehash256 = 1
 augroup load_colors
   au!
   au ColorScheme * set background=dark
-  au ColorScheme * hi Normal ctermbg = NONE
+  "au ColorScheme * hi Normal ctermbg = NONE
   au ColorScheme * hi CursorLineNr ctermfg=117 cterm=bold 
   au ColorScheme * hi LineNr ctermfg=250 ctermbg=none
-  au ColorScheme * hi Pmenu ctermfg=250 ctermbg=8
-  au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
+  "au ColorScheme * hi Pmenu ctermfg=250 ctermbg=8
+  "au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
 augroup END
 if (&ft != 'text' && &ft != 'markdown')
-  color molokai
+  "color molokai
+  let g:seoul256_background = 236
+  color seoul256
 endif
 
 augroup readtxt
@@ -243,6 +247,7 @@ let g:tagbar_width =20
 let g:tagbar_show_visibility = 1
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
+let g:tagbar_map_showproto = "p"
 
 "Limelight configuration
 let g:limelight_conceal_ctermfg = 248
@@ -380,3 +385,5 @@ endfunction
 
 autocmd User GoyoEnter call <SID>goyo_enter()
 autocmd User GoyoLeave call <SID>goyo_leave()
+let Tlist_Compact_Format = 1
+let Tlist_Use_Right_Window = 1
