@@ -8,6 +8,7 @@ Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'garbas/vim-snipmate',{ 'on': []} | Plug 'indiofish/vim-snippets'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
 Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
   au BufEnter *.rkt RainbowParentheses
 Plug 'junegunn/limelight.vim'
@@ -101,7 +102,7 @@ augroup load_colors
 augroup END
 if (&ft != 'text' && &ft != 'markdown')
   "color molokai
-  let g:seoul256_background = 236
+  let g:seoul256_background = 234
   color seoul256
 endif
 
@@ -171,6 +172,7 @@ vnoremap <silent>* :call VisualSelection('f', '')<CR>
 vnoremap <silent># :call VisualSelection('b', '')<CR>
 "sudo write a file :W
 command! W w !sudo tee % > /dev/null
+command! Memo 20vnew
 
 "PLUGIN CONFIGURATION
 
