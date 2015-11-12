@@ -13,6 +13,7 @@ Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/seoul256.vim'
+Plug 'roman/golden-ratio'
 if has("lua")
   Plug 'indiofish/neocomplete.vim'
 else
@@ -45,7 +46,6 @@ set smartcase
 set infercase
 set autoread
 set incsearch
-set esckeys "allow arrow key
 set hlsearch
 set showmode
 set nomodeline
@@ -94,6 +94,7 @@ augroup load_colors
   au!
   au ColorScheme * set background=dark
   "au ColorScheme * hi Normal ctermbg = NONE
+  "au ColorScheme * hi Normal ctermfg = 254
   au ColorScheme * hi CursorLineNr ctermfg=117 cterm=bold 
   au ColorScheme * hi LineNr ctermfg=250 ctermbg=none
   "au ColorScheme * hi Pmenu ctermfg=250 ctermbg=8
