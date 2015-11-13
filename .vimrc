@@ -8,12 +8,12 @@ Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'garbas/vim-snipmate',{ 'on': []} | Plug 'indiofish/vim-snippets'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
 Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
   au BufEnter *.rkt RainbowParentheses
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/seoul256.vim'
-"Plug 'roman/golden-ratio'
 Plug 'zhaocai/GoldenView.vim'
 if has("lua")
   Plug 'indiofish/neocomplete.vim'
