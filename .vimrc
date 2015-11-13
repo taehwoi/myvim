@@ -202,6 +202,7 @@ let g:syntastic_warning_symbol = "!!"
 let g:syntastic_cpp_compiler = 'g++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
 let g:syntastic_java_javac_classpath= './'
+let g:syntastic_ocaml_use_ocamlc = 1
 let g:syntastic_verilog_compiler = 'iverilog'
 let g:syntastic_check_on_wq = 0
 let g:syntastic_auto_jump = 3
@@ -291,7 +292,7 @@ augroup lazyload_plugins
   if (&ft != 'text' && &ft != 'markdown')
     au InsertEnter * call plug#load('vim-snipmate')
   endif
-  au BufWritePre *.c,*.cpp,*.java,*.rkt call plug#load('syntastic')
+  au BufWritePre *.c,*.cpp,*.java,*.rkt,*.ml call plug#load('syntastic')
 augroup END
 
 nmap <space>r :Run<CR>
