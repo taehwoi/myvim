@@ -46,6 +46,7 @@ set ignorecase
 set smartcase
 set infercase
 set autoread
+set autowrite
 set incsearch
 set hlsearch
 set showmode
@@ -110,7 +111,7 @@ endif
 augroup readtxt
   autocmd!
   au FileType {text,markdown} set background=light
-  au FileType {text,markdown} hi Normal ctermfg=234 ctermbg=255
+  au FileType {text,markdown} hi Normal ctermfg=234 ctermbg=251
   au FileType {text,markdown} :Goyo
 augroup END
 
@@ -131,6 +132,9 @@ nmap <leader>q :q<cr>
 "Toggle paste mode on and off
 map <silent><leader>pp :setlocal paste!<cr>
 noremap <Leader>l :ls<CR>:b
+noremap <Leader>gc :Gcommit<CR>
+noremap <Leader>gw :Gwrite<CR>
+noremap <Leader>gp :Gpush<CR>
 
 "copy the whole file to clipboard
 nnoremap <leader>cp :%y+<cr>:echo "Copied to clipboard"<cr>
