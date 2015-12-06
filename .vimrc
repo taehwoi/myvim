@@ -40,7 +40,7 @@ set encoding=UTF-8
 set fileencodings=UTF-8
 set noswapfile
 set shortmess=a
-
+set shortmess+=o
 set title
 set ignorecase
 set smartcase
@@ -50,6 +50,7 @@ set autowrite
 set incsearch
 set hlsearch
 set showmode
+"set noshowmode
 set nomodeline
 set expandtab
 set mousehide
@@ -71,10 +72,10 @@ set backspace=eol,start,indent
 set showcmd
 set number
 set rnu "relative number lines
-set laststatus=2 "enabled to show statusline(airline)
+set laststatus=2 "enabled to show statusline
 set wrap
 set ttimeoutlen=40
-"set autowrite
+set autowrite
 
 set pumheight=5 "height of ins-completion-menu
 set foldmethod=manual
@@ -87,6 +88,7 @@ set wildignorecase
 set wildmode=longest:full,full
 set wildignore=*.o,*~,*.pyc,*.class,*.zip,*.out
 let loaded_matchparen = 1
+let loaded_netrwPlugin = 1
 let &titleold = getcwd()
 
 "COLOR CONFIGURATION
@@ -293,9 +295,9 @@ augroup END
 
 augroup lazyload_plugins
   au!
-  if (&ft != 'text' && &ft != 'markdown')
+  "if (&ft != 'text' && &ft != 'markdown')
     au InsertEnter * call plug#load('vim-snipmate')
-  endif
+  "endif
   au BufWritePre *.c,*.cpp,*.java,*.rkt,*.ml call plug#load('syntastic')
 augroup END
 
@@ -309,14 +311,14 @@ augroup Run
   au Bufenter *.c map <F6> :!gcc % -g && gdb ./a.out<CR>
   "au Bufenter *.c set makeprg=gcc\ %\ -lm
 
-  au Bufenter *.c command! Run !g++ % && ./a.out
+  au Bufenter *.cpp command! Run !g++ % && ./a.out
   au Bufenter *.cpp map <F6> :!g++ % -g && gdb ./a.out<CR>
 
   au Bufenter *.java command! Run !javac % && java %:r
   au Bufenter *.java map <F4> :!javac % <CR><CR>
 
   au Bufenter *.rkt command! Run !racket %
-  au Bufenter *.ml command! Run !ocaml %
+  au Bufenter *.ml command! Run !ocamlbuild %:r.native && ./%:r.native <CR>
   "au Bufenter *.rkt set makeprg=racket\ %
 augroup END
 
@@ -365,7 +367,8 @@ function! Smart_TabComplete(min_len)
   elseif ( has_slash )
     return "\<C-X>\<C-F>\<C-N>"                  
   elseif (has_period)
-    return "\<C-X>\<C-O>"                         " plugin matching
+    return "\<C-N>\<C-N>"           "don't use omni for now
+    "return "\<C-X>\<C-O>"                         " plugin matching
   else
     return "\<tab>"
   endif
@@ -396,5 +399,3 @@ endfunction
 
 autocmd User GoyoEnter call <SID>goyo_enter()
 autocmd User GoyoLeave call <SID>goyo_leave()
-let Tlist_Compact_Format = 1
-let Tlist_Use_Right_Window = 1
