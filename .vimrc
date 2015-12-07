@@ -318,7 +318,7 @@ augroup Run
   au Bufenter *.java map <F4> :!javac % <CR><CR>
 
   au Bufenter *.rkt command! Run !racket %
-  au Bufenter *.ml command! Run !ocamlbuild %:r.native && ./%:r.native <CR>
+  au Bufenter *.ml command! Run !ocamlbuild -quiet %:r.native && ./%:r.native <CR>
   "au Bufenter *.rkt set makeprg=racket\ %
 augroup END
 
