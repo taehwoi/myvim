@@ -172,6 +172,9 @@ nnoremap td  :tabclose<CR>
 nnoremap [l  :lprev<CR>
 nnoremap ]l  :lnext<CR>
 
+nnoremap <silent>bn :bnext<CR>
+nnoremap <silent>bp :bprev<CR>
+
 "press enter to disable highlight
 nnoremap <silent><CR> :noh<CR><CR>:<backspace>
 "search visually selected area
@@ -318,6 +321,7 @@ augroup Run
   au Bufenter *.java map <F4> :!javac % <CR><CR>
 
   au Bufenter *.rkt command! Run !racket %
+  "au Bufenter *.ml command! Run !ocamlbuild -quiet %:r.native && ./%:r.native <CR>
   au Bufenter *.ml command! Run !ocamlbuild -quiet %:r.native --
   "au Bufenter *.rkt set makeprg=racket\ %
 augroup END
