@@ -134,7 +134,7 @@ nmap <leader>q :q<cr>
 "Toggle paste mode on and off
 map <silent><leader>pp :setlocal paste!<cr>
 noremap <Leader>l :ls<CR>:b
-noremap <Leader>gc :Gcommit<CR>
+noremap <Leader>gc :Gcommit -m "
 noremap <Leader>gw :Gwrite<CR>
 noremap <Leader>gp :Gpush<CR>
 
