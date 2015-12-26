@@ -10,7 +10,7 @@ Plug 'garbas/vim-snipmate',{ 'on': []} | Plug 'indiofish/vim-snippets'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
-  au BufEnter *.rkt RainbowParentheses
+  "au BufEnter *.rkt RainbowParentheses
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/seoul256.vim'
@@ -18,10 +18,6 @@ Plug 'zhaocai/GoldenView.vim'
 if has("lua")
   Plug 'indiofish/neocomplete.vim'
 else
-  "Plug 'vim-scripts/AutoComplPop'
-  "inoremap <expr><silent><Tab> pumvisible() ? "\<C-Y>"
-        "\:"\<C-R>=snipMate#TriggerSnippet()\<CR>"
-
   inoremap <silent><expr><Tab> pumvisible() ? "\<C-Y>"
         \: snipMate#CanBeTriggered()?
         \"\<C-R>=snipMate#TriggerSnippet()\<CR>"
@@ -104,10 +100,20 @@ augroup load_colors
   "au ColorScheme * hi Pmenu ctermfg=250 ctermbg=8
   "au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
 augroup END
-if (&ft != 'text' && &ft != 'markdown')
+if (&ft != 'text' && &ft != 'markdown' && &ft != 'scheme')
   "color molokai
   let g:seoul256_background = 236
   color seoul256
+endif
+
+if (&ft == 'scheme')
+  color luna_term
+endif
+
+if (&ft == 'python')
+  set tabstop=4
+  set shiftwidth=4
+  set softtabstop=4
 endif
 
 augroup readtxt
@@ -292,7 +298,10 @@ augroup movecursor
           \   exe "normal g`\"" |
           \ endif 
 
-    autocmd BufEnter * let &titlestring = expand("%:t") . " :: vim"
+    autocmd BufEnter * let &titlestring = ' ' . expand("%:t") . " :: vim"
+    autocmd BufEnter * call system("tmux rename-window ". expand("%:t"))
+    autocmd VimLeave * call system("tmux rename-window bash")
+    set title
   endif
 augroup END
 
