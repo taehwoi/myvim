@@ -14,7 +14,8 @@ Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/seoul256.vim'
-Plug 'zhaocai/GoldenView.vim'
+"Plug 'zhaocai/GoldenView.vim'
+Plug 'vim-scripts/indentpython.vim', {'for': 'python'}
 if has("lua")
   Plug 'indiofish/neocomplete.vim'
 else
@@ -35,8 +36,7 @@ set omnifunc=syntaxcomplete#Complete
 set encoding=UTF-8
 set fileencodings=UTF-8
 set noswapfile
-set shortmess=a
-set shortmess+=o
+set shortmess=ao
 set title
 set ignorecase
 set smartcase
@@ -46,7 +46,6 @@ set autowrite
 set incsearch
 set hlsearch
 set showmode
-"set noshowmode
 set nomodeline
 set expandtab
 set mousehide
@@ -72,6 +71,7 @@ set laststatus=2 "enabled to show statusline
 set wrap
 set ttimeoutlen=40
 set autowrite
+set textwidth=79
 
 set pumheight=5 "height of ins-completion-menu
 set foldmethod=manual
@@ -210,7 +210,7 @@ au BufEnter *.rkt let b:AutoPairs
 let g:syntastic_filetype_map = {"scheme" : "racket"}
 let g:syntastic_mode_map = {
       \ "mode": "active",
-      \ "active_filetypes": ["c", "scheme", "cpp", "java"],
+      \ "active_filetypes": ["c", "scheme", "cpp", "java", "python"],
       \ "passive_filetypes": [] }
 let g:syntastic_error_symbol = "X!"
 let g:syntastic_warning_symbol = "!!"
@@ -218,8 +218,8 @@ let g:syntastic_cpp_compiler = 'g++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
 let g:syntastic_java_javac_classpath= './'
 let g:syntastic_ocaml_use_ocamlc = 1
-let g:syntastic_verilog_compiler = 'iverilog'
-let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_check_on_wq = 1
 let g:syntastic_auto_jump = 3
 highlight SyntasticErrorSign ctermfg=0 ctermbg=168
 
@@ -310,14 +310,14 @@ augroup lazyload_plugins
   "if (&ft != 'text' && &ft != 'markdown')
     au InsertEnter * call plug#load('vim-snipmate')
   "endif
-  au BufWritePre *.c,*.cpp,*.java,*.rkt,*.ml call plug#load('syntastic')
+  au BufWritePre *.c,*.cpp,*.java,*.rkt,*.ml,*.py call plug#load('syntastic')
 augroup END
 
 nmap <space>r :Run<CR>
 nmap <f5> :Run<CR>
 augroup Run
   au!
-  au Bufenter *.python command! Run !python %
+  au Bufenter *.py command! Run !python %
 
   au Bufenter *.c command! Run !gcc % -lm && ./a.out
   au Bufenter *.c map <F6> :!gcc % -g && gdb ./a.out<CR>
