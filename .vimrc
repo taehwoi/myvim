@@ -16,6 +16,8 @@ Plug 'junegunn/goyo.vim'
 Plug 'junegunn/seoul256.vim'
 "Plug 'zhaocai/GoldenView.vim'
 Plug 'vim-scripts/indentpython.vim', {'for': 'python'}
+Plug 'zeis/vim-kolor'
+Plug 'chriskempson/vim-tomorrow-theme'
 if has("lua")
   Plug 'indiofish/neocomplete.vim'
 else
@@ -50,7 +52,7 @@ set nomodeline
 set expandtab
 set mousehide
 set hidden "keeps buffer
-set viminfo=:20,'20,@0,<0
+set viminfo=:20,'20,@0,<0,/0
 
 set splitright "when opening splits, they go right
 set splitbelow "and below
@@ -89,22 +91,27 @@ let &titleold = getcwd()
 
 "COLOR CONFIGURATION
 set t_Co=256
-let g:rehash256 = 1
+"color molokai
+"let g:seoul256_background = 236
+"color seoul256
+"let g:rehash256 = 1
 augroup load_colors
   au!
   au ColorScheme * set background=dark
-  "au ColorScheme * hi Normal ctermbg = NONE
+  au ColorScheme * hi Normal ctermbg=235
+  au ColorScheme * hi NonText ctermfg=236 ctermbg = 235
   "au ColorScheme * hi Normal ctermfg = 254
   au ColorScheme * hi CursorLineNr ctermfg=117 cterm=bold 
   au ColorScheme * hi LineNr ctermfg=250 ctermbg=none
-  "au ColorScheme * hi Pmenu ctermfg=250 ctermbg=8
-  "au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
+  au ColorScheme * hi Pmenu ctermfg=250 ctermbg=237
+  au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
+  au ColorScheme * hi StatusLine ctermbg=238 ctermfg=253 cterm=bold
+  "au ColorScheme * hi StatusLineNC ctermfg=244 ctermbg=232
 augroup END
-if (&ft != 'text' && &ft != 'markdown' && &ft != 'scheme')
-  "color molokai
-  let g:seoul256_background = 236
-  color seoul256
-endif
+color kolor
+let g:kolor_bold=1
+let python_highlight_all=1
+
 
 if (&ft == 'scheme')
   color luna_term
