@@ -18,6 +18,7 @@ Plug 'junegunn/seoul256.vim'
 Plug 'vim-scripts/indentpython.vim', {'for': 'python'}
 Plug 'zeis/vim-kolor'
 Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'christoomey/vim-tmux-navigator'
 if has("lua")
   Plug 'indiofish/neocomplete.vim'
 else
@@ -307,7 +308,7 @@ augroup movecursor
 
     autocmd BufEnter * let &titlestring = ' ' . expand("%:t") . " :: vim"
     autocmd BufEnter * call system("tmux rename-window ". expand("%:t"))
-    autocmd VimLeave * call system("tmux rename-window bash")
+    autocmd VimLeave * call system("tmux setw automatic-rename")
     set title
   endif
 augroup END
