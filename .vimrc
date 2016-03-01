@@ -10,24 +10,21 @@ Plug 'garbas/vim-snipmate',{ 'on': []} | Plug 'indiofish/vim-snippets'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
-  "au BufEnter *.rkt RainbowParentheses
-Plug 'junegunn/limelight.vim'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/seoul256.vim'
+"Plug 'junegunn/seoul256.vim'
+Plug 'junegunn/Goyo.vim'
 "Plug 'zhaocai/GoldenView.vim'
 Plug 'vim-scripts/indentpython.vim', {'for': 'python'}
-Plug 'zeis/vim-kolor'
-Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'christoomey/vim-tmux-navigator'
 if has("lua")
-  Plug 'indiofish/neocomplete.vim'
+  "Plug 'indiofish/neocomplete.vim'
+  Plug 'Shougo/neocomplete.vim' | Plug 'Shougo/neoinclude.vim'
+        \ | Plug 'Shougo/neco-syntax'
 else
   inoremap <silent><expr><Tab> pumvisible() ? "\<C-Y>"
         \: snipMate#CanBeTriggered()?
         \"\<C-R>=snipMate#TriggerSnippet()\<CR>"
         \: Smart_TabComplete(3)
 endif
-
 "dependencies
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
@@ -35,7 +32,6 @@ call plug#end()
 
 "BASIC SETTINGS
 filetype detect
-set omnifunc=syntaxcomplete#Complete
 set encoding=UTF-8
 set fileencodings=UTF-8
 set noswapfile
@@ -92,25 +88,23 @@ let &titleold = getcwd()
 
 "COLOR CONFIGURATION
 set t_Co=256
-"color molokai
-"let g:seoul256_background = 236
-"color seoul256
-"let g:rehash256 = 1
 augroup load_colors
   au!
   au ColorScheme * set background=dark
-  au ColorScheme * hi Normal ctermbg=235
-  au ColorScheme * hi NonText ctermfg=236 ctermbg = 235
+  au ColorScheme * hi Normal ctermbg=236
+  au ColorScheme * hi NonText ctermfg=234 ctermbg = 236
   "au ColorScheme * hi Normal ctermfg = 254
   au ColorScheme * hi CursorLineNr ctermfg=117 cterm=bold 
   au ColorScheme * hi LineNr ctermfg=250 ctermbg=none
-  au ColorScheme * hi Pmenu ctermfg=250 ctermbg=237
+  au ColorScheme * hi Pmenu ctermfg=250 ctermbg=242
   au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
+  au ColorScheme * hi WildMenu ctermbg=238
   au ColorScheme * hi StatusLine ctermbg=238 ctermfg=253 cterm=bold
   "au ColorScheme * hi StatusLineNC ctermfg=244 ctermbg=232
 augroup END
-color kolor
-let g:kolor_bold=1
+"let g:rehash256 = 1
+color molokai
+let python_highlight_space_errors=0
 let python_highlight_all=1
 
 
@@ -122,12 +116,11 @@ if (&ft == 'python')
   set tabstop=4
   set shiftwidth=4
   set softtabstop=4
+  setlocal omnifunc=pythoncomplete#Complete 
 endif
 
 augroup readtxt
   autocmd!
-  au FileType {text,markdown} set background=light
-  au FileType {text,markdown} hi Normal ctermfg=234 ctermbg=251
   au FileType {text,markdown} :Goyo
 augroup END
 
@@ -243,6 +236,10 @@ if has("lua")
   let g:neocomplete#enable_smart_case = 1
   let g:neocomplete#enable_auto_select = 1
   let g:neocomplete#auto_completion_start_length = 3
+  let g:neocomplete#max_keyword_width = 20
+  let g:neocomplete#max_list = 20
+  let g:neocomplete#enable_fuzzy_completion = 0
+  let g:neoinclude#ctags_command=""
   "fixes a bug that happens where autopairs overwrite neocomplete's BS
   let g:AutoPairsMapBS = 0
   inoremap <expr><BS> pumvisible()? neocomplete#smart_close_popup()."\<C-h>" 
@@ -250,8 +247,8 @@ if has("lua")
   "Tab to complete a snippet, or autocomplete when popup is up
   "give snipmate priority over auto completion
   inoremap <expr><Tab> snipMate#CanBeTriggered()? 
-        \"\<C-R>=snipMate#TriggerSnippet()\<CR>" 
-        \: pumvisible() ? "\<CR>" : "<TAB>"
+        \"\<C-R>=snipMate#TriggerSnippet()\<CR>"
+        \: pumvisible() ? "\<C-y>" : "<TAB>"
 
   if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
@@ -338,9 +335,7 @@ augroup Run
   au Bufenter *.java map <F4> :!javac % <CR><CR>
 
   au Bufenter *.rkt command! Run !racket %
-  "au Bufenter *.ml command! Run !ocamlbuild -quiet %:r.native && ./%:r.native <CR>
   au Bufenter *.ml command! Run !ocamlbuild -quiet %:r.native --
-  "au Bufenter *.rkt set makeprg=racket\ %
 augroup END
 
 "FUNCTIONS
@@ -388,8 +383,7 @@ function! Smart_TabComplete(min_len)
   elseif ( has_slash )
     return "\<C-X>\<C-F>\<C-N>"                  
   elseif (has_period)
-    return "\<C-N>\<C-N>"           "don't use omni for now
-    "return "\<C-X>\<C-O>"                         " plugin matching
+    return "\<C-X>\<C-O>\<C-N>"                         " plugin matching
   else
     return "\<tab>"
   endif
