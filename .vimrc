@@ -10,13 +10,11 @@ Plug 'garbas/vim-snipmate',{ 'on': []} | Plug 'indiofish/vim-snippets'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'scheme' }
-"Plug 'junegunn/seoul256.vim'
 Plug 'junegunn/Goyo.vim'
 "Plug 'zhaocai/GoldenView.vim'
 Plug 'vim-scripts/indentpython.vim', {'for': 'python'}
 Plug 'christoomey/vim-tmux-navigator'
 if has("lua")
-  "Plug 'indiofish/neocomplete.vim'
   Plug 'Shougo/neocomplete.vim' | Plug 'Shougo/neoinclude.vim'
         \ | Plug 'Shougo/neco-syntax'
 else
@@ -91,21 +89,19 @@ set t_Co=256
 augroup load_colors
   au!
   au ColorScheme * set background=dark
-  au ColorScheme * hi Normal ctermbg=236
-  au ColorScheme * hi NonText ctermfg=234 ctermbg = 236
+  "au ColorScheme * hi Normal ctermbg=234
+  au ColorScheme * hi Normal ctermbg=None
+  au ColorScheme * hi NonText ctermfg=234 ctermbg = None
   "au ColorScheme * hi Normal ctermfg = 254
   au ColorScheme * hi CursorLineNr ctermfg=117 cterm=bold 
   au ColorScheme * hi LineNr ctermfg=250 ctermbg=none
-  au ColorScheme * hi Pmenu ctermfg=250 ctermbg=242
+  au ColorScheme * hi Pmenu ctermfg=250 ctermbg=240
   au ColorScheme * hi PmenuSel ctermfg=11 ctermbg=25
   au ColorScheme * hi WildMenu ctermbg=238
   au ColorScheme * hi StatusLine ctermbg=238 ctermfg=253 cterm=bold
   "au ColorScheme * hi StatusLineNC ctermfg=244 ctermbg=232
 augroup END
-"let g:rehash256 = 1
 color molokai
-let python_highlight_space_errors=0
-let python_highlight_all=1
 
 
 if (&ft == 'scheme')
@@ -113,6 +109,8 @@ if (&ft == 'scheme')
 endif
 
 if (&ft == 'python')
+  let python_highlight_space_errors=0
+  let python_highlight_all=1
   set tabstop=4
   set shiftwidth=4
   set softtabstop=4
@@ -126,8 +124,7 @@ augroup END
 
 
 "STATUSLINE CONFIGURATION
-set statusline=*PATH:\ 
-set statusline+=\[%.20{pathshorten(MyDir())}%t\] "file path shortened
+set statusline=\[%.20{pathshorten(MyDir())}%t\] "file path shortened
 set statusline+=%(\ [%M%R%H]%)
 set statusline+=%=\ Ln:%04l/%04L      "flags and LineNum
 
@@ -238,7 +235,7 @@ if has("lua")
   let g:neocomplete#auto_completion_start_length = 3
   let g:neocomplete#max_keyword_width = 20
   let g:neocomplete#max_list = 20
-  let g:neocomplete#enable_fuzzy_completion = 0
+  let g:neocomplete#enable_fuzzy_completion = 1
   let g:neoinclude#ctags_command=""
   "fixes a bug that happens where autopairs overwrite neocomplete's BS
   let g:AutoPairsMapBS = 0
@@ -247,8 +244,10 @@ if has("lua")
   "Tab to complete a snippet, or autocomplete when popup is up
   "give snipmate priority over auto completion
   inoremap <expr><Tab> snipMate#CanBeTriggered()? 
-        \"\<C-R>=snipMate#TriggerSnippet()\<CR>"
-        \: pumvisible() ? "\<C-y>" : "<TAB>"
+        \ "\<C-R>=snipMate#TriggerSnippet()\<CR>" :
+        \ neocomplete#complete_common_string() != '' ?
+        \   neocomplete#complete_common_string() :
+        \ pumvisible() ? "\<C-y>" : "\<TAB>"
 
   if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
@@ -271,19 +270,6 @@ let g:tagbar_show_visibility = 1
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
 let g:tagbar_map_showproto = "p"
-
-"Limelight configuration
-let g:limelight_conceal_ctermfg = 248
-let g:limelight_priority = -1
-
-"GoldenView configuration
-let g:goldenview__enable_default_mapping=0
-
-"ACP
-let g:acp_behaviorKeywordLength = 3
-let g:acp_behaviorKeywordCommand = "\<C-N>"
-let g:acp_completeoptPreview = 1
-let g:acp_completeOption='.,b,i'
 
 "AUTOCMDS
 
@@ -312,17 +298,15 @@ augroup END
 
 augroup lazyload_plugins
   au!
-  "if (&ft != 'text' && &ft != 'markdown')
     au InsertEnter * call plug#load('vim-snipmate')
-  "endif
-  au BufWritePre *.c,*.cpp,*.java,*.rkt,*.ml,*.py call plug#load('syntastic')
+    au BufWritePre * call plug#load('syntastic')
 augroup END
 
 nmap <space>r :Run<CR>
 nmap <f5> :Run<CR>
 augroup Run
   au!
-  au Bufenter *.py command! Run !python %
+  au Bufenter *.py command! Run !python3 %
 
   au Bufenter *.c command! Run !gcc % -lm && ./a.out
   au Bufenter *.c map <F6> :!gcc % -g && gdb ./a.out<CR>
