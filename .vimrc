@@ -14,6 +14,8 @@ Plug 'junegunn/Goyo.vim'
 "Plug 'zhaocai/GoldenView.vim'
 Plug 'vim-scripts/indentpython.vim', {'for': 'python'}
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'jvoorhis/coq.vim'
+Plug 'the-lambda-church/coquille', {'for': 'coq'} | Plug 'def-lkb/vimbufsync'
 if has("lua")
   Plug 'Shougo/neocomplete.vim' | Plug 'Shougo/neoinclude.vim'
         \ | Plug 'Shougo/neco-syntax'
@@ -273,6 +275,11 @@ let g:tagbar_map_showproto = "p"
 
 "AUTOCMDS
 
+augroup coq
+  au!
+  au BufEnter,BufNewFile *.v CoqLaunch
+  au BufEnter,BufNewFile *.v map <leader>q :qa<cr>
+augroup END
 augroup format
   au!
   au FileType * set formatoptions-=o
