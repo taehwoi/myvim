@@ -327,6 +327,7 @@ augroup Run
 
   au Bufenter *.rkt command! Run !racket %
   au Bufenter *.ml command! Run !ocamlbuild -quiet %:r.native --
+  au Bufenter *.v command! Run CoqToCursor
 augroup END
 
 "FUNCTIONS
